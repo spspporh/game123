@@ -1,0 +1,538 @@
+<!DOCTYPE html>
+<html lang="en">
+
+  <head>
+    <meta charset="UTF-8">
+    <title>TikTok Coin Upload</title>
+    <link rel="stylesheet" href="./style.css">
+
+  </head>
+    
+  <body>
+  <!doctype html>
+<html lang="tr">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover" />
+<title>Get Coins — Mock (ayıcık 2)</title>
+<style>
+  :root{
+    --red:#ef2b2b;
+    --dark:#111;
+    --muted:#777;
+    --bg:#fff;
+    --card-shadow: 0 10px 30px rgba(0,0,0,0.18);
+    --radius:12px;
+    --maxw:380px;
+  }
+  *{box-sizing:border-box}
+  body{
+    margin:0;
+    font-family: -apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Inter,Arial;
+    background:var(--bg);
+    color:var(--dark);
+    -webkit-font-smoothing:antialiased;
+  }
+
+  /* container sized for mobile preview */
+  .viewport{
+    max-width:var(--maxw);
+    margin:0 auto;
+    padding:14px;
+    min-height:100vh;
+    position:relative;
+  }
+
+  /* header */
+  .header{display:flex;align-items:center;gap:10px;margin-bottom:8px}
+  .brand{display:flex;align-items:center;gap:8px;font-weight:700;font-size:18px}
+  .brand img{width:30px;height:30px}
+  /* --- Search box (rounded, slightly muted) --- */
+  .brand .search-box{
+    margin-left:8px;
+    padding:6px 10px;
+    border-radius:20px;
+    border:1px solid #ddd;
+    background:#f9f9f9;
+    font-size:13px;
+    opacity:.6;
+  }
+  .history{font-size:12px;font-weight:700;color:var(--muted)} /* moved down next to title */
+
+  /* title row (Get Coins + history on same horizontal) */
+  .title-row{display:flex;align-items:center;justify-content:space-between;margin-bottom:4px}
+  h1.title{font-size:18px;margin:0;padding:0;font-weight:700}
+  .subtitle{font-size:13px;color:var(--muted);margin:6px 0 10px}
+
+  /* input */
+  .input{
+    width:100%;padding:10px;border-radius:10px;border:1px solid #e0e0e0;font-size:14px;margin-bottom:10px;
+  }
+
+  .promo{font-size:13px;color:#b22323;font-weight:700;margin-bottom:8px}
+
+  /* grid of coins */
+  .grid{
+    display:grid;
+    grid-template-columns:repeat(2,1fr);
+    gap:12px;
+    margin-bottom:12px;
+  }
+  .coin{
+    display:flex;gap:10px;align-items:center;padding:8px;border-radius:10px;border:1px solid #eee;background:#fff;
+    cursor:pointer; transition:transform .12s, box-shadow .12s;
+  }
+  .coin:hover{transform:translateY(-3px)}
+  .coin .icon img{width:40px;height:40px;border-radius:50%;}
+  .coin .txt{display:flex;flex-direction:column}
+  .coin .amount{font-weight:800;font-size:16px}
+  .coin .price{font-size:13px;color:var(--muted)}
+
+  /* custom small note */
+  .note{font-size:12px;color:var(--muted);margin-top:4px}
+
+  /* payment row */
+  .pm-row{display:flex;align-items:center;gap:10px;margin-top:8px}
+  .pm-row .label{font-weight:700;font-size:14px}
+  .pm-row .icons{display:flex;gap:6px;margin-left:6px;align-items:center}
+  .pm-row img{height:16px} /* küçültüldü */
+
+  /* big action button */
+  .btn{
+    width:100%;
+    padding:12px;
+    border-radius:12px;
+    border:none;
+    background:var(--red);
+    color:#fff;
+    font-weight:800;
+    font-size:16px;
+    margin-top:12px;
+    box-shadow:0 3px 0 rgba(0,0,0,0.06);
+    cursor:pointer;
+  }
+
+  /* overlays */
+  .overlay{
+    position:fixed;inset:0;display:none;align-items:center;justify-content:center;padding:18px;z-index:90;
+  }
+  .overlay.active{display:flex}
+  /* blur background when any overlay active */
+  .viewport.blur{filter:blur(6px) saturate(.98);transition:filter .18s ease}
+
+  .modal{
+    width:100%;max-width:420px;background:#fff;border-radius:var(--radius);padding:18px;box-shadow:var(--card-shadow);
+  }
+
+  /* CUSTOM modal — title + logo slightly smaller as requested */
+  .custom-title{font-size:24px;font-weight:400;margin-bottom:6px;text-align:center;font-family: Arial, Helvetica, sans-serif;}
+  .custom-top{display:flex;align-items:center;gap:10px;justify-content:flex-start;margin-bottom:8px}
+  .custom-top img{width:36px;height:36px;border-radius:50%;} /* logo slightly smaller */
+  .custom-display{font-size:18px;font-weight:400;font-family: Arial, Helvetica, sans-serif}
+  .keypad{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin-top:8px}
+  .key{padding:12px 6px;border-radius:8px;text-align:center;font-size:16px;background:transparent;cursor:pointer;border:1px solid #f0f0f0}
+  .total-line{margin-top:10px;font-size:15px;font-weight:400;text-align:left;font-family: Arial, Helvetica, sans-serif}
+
+  /* ORDER modal */
+  .order-head{font-size:22px;font-weight:800;text-align:center;margin-bottom:8px}
+  .order-row{display:flex;justify-content:space-between;padding:8px 4px;font-size:15px}
+  .card-box{display:flex;align-items:center;gap:10px;border-radius:10px;padding:10px;border:1px solid #eee;margin-top:8px;position:relative}
+  .card-box img{height:18px} /* mastercard smaller */
+  .selected-dot{width:14px;height:14px;border-radius:50%;background:#ff3b3b;position:absolute;right:12px;top:12px;box-shadow:0 2px 6px rgba(0,0,0,0.12)}
+
+  /* PROCESS modal (simple hourglass SVG used) */
+  .proc-modal{width:100%;max-width:520px;background:#fff;border-radius:var(--radius);padding:26px;box-shadow:var(--card-shadow);text-align:center}
+  .proc-title{font-size:22px;font-weight:800;margin-top:8px}
+  .proc-sub{font-size:14px;color:var(--muted);margin-bottom:10px}
+  .timer-wrap{display:flex;justify-content:center;margin-top:12px}
+  .timer-circle{width:110px;height:110px;border-radius:50%;background:#f5f5f5;display:flex;align-items:center;justify-content:center;font-weight:800;font-size:20px;position:relative}
+
+  .hourglass-svg{width:40px;height:40px;display:inline-block;animation:spin 1s linear infinite;margin:0 auto}
+  @keyframes spin{from{transform:rotate(0deg)}to{transform:rotate(360deg)}}
+
+  /* DONE modal slightly bigger */
+  .done-modal{width:100%;max-width:480px;background:#fff;border-radius:var(--radius);padding:22px;box-shadow:var(--card-shadow);text-align:center}
+  .done-check{width:80px;height:80px;border-radius:50%;background:#2fd37a;margin:10px auto;display:flex;align-items:center;justify-content:center;color:#fff;font-size:40px;font-weight:800;box-shadow:0 10px 40px rgba(47,211,122,0.16)}
+  .done-title{font-size:22px;font-weight:800;text-align:center;margin-top:8px}
+  .done-sub{text-align:center;color:var(--muted);font-size:13px;margin-top:6px}
+  .done-back{margin-top:12px;padding:10px 16px;border-radius:10px;background:var(--red);color:#fff;border:none;font-weight:800;cursor:pointer}
+
+  /* small screens */
+  @media(max-width:380px){
+    .brand{font-size:16px}
+    .custom-title{font-size:22px}
+    .btn{font-size:15px;padding:10px}
+    .coin .amount{font-size:15px}
+    .proc-modal{padding:18px}
+    .done-modal{padding:16px}
+  }
+</style>
+</head>
+<body>
+  <div class="viewport" id="viewport">
+    <!-- HEADER -->
+    <div class="header">
+      <div class="brand">
+        <!-- TikTok logo kept -->
+        <img src="https://cdn4.iconfinder.com/data/icons/social-media-flat-7/64/Social-media_Tiktok-512.png" alt="TikTok logo">
+        TikTok
+        <!-- rounded, muted search box placed beside TikTok text -->
+        <input class="search-box" placeholder="Search..." aria-label="Search">
+      </div>
+    </div>
+
+    <!-- Title row: Get Coins + history on same horizontal line -->
+    <div class="title-row">
+      <h1 class="title">Get Coins</h1>
+      <div class="history" id="history">View transaction history</div>
+    </div>
+
+    <div class="subtitle">Enter Username</div>
+    <input id="username" class="input" placeholder="@username" />
+
+    <div class="promo">Recharge: Save up to 15% compared to in-app purchase</div>
+
+    <div class="grid" id="grid">
+      <!-- use the same coin image URL consistently -->
+      <div class="coin" data-coins="70"><div class="icon"><img src="https://cdn.epinium.net/epinium/files/www.hi2games.com/products/coin0-196094001670674542.jpg" alt="coin"></div><div class="txt"><div class="amount">70</div><div class="price">$0.91</div></div></div>
+      <div class="coin" data-coins="350"><div class="icon"><img src="https://cdn.epinium.net/epinium/files/www.hi2games.com/products/coin0-196094001670674542.jpg" alt="coin"></div><div class="txt"><div class="amount">350</div><div class="price">$4.55</div></div></div>
+
+      <div class="coin" data-coins="700"><div class="icon"><img src="https://cdn.epinium.net/epinium/files/www.hi2games.com/products/coin0-196094001670674542.jpg" alt="coin"></div><div class="txt"><div class="amount">700</div><div class="price">$9.10</div></div></div>
+      <div class="coin" data-coins="1400"><div class="icon"><img src="https://cdn.epinium.net/epinium/files/www.hi2games.com/products/coin0-196094001670674542.jpg" alt="coin"></div><div class="txt"><div class="amount">1,400</div><div class="price">$18.20</div></div></div>
+
+      <div class="coin" data-coins="3500"><div class="icon"><img src="https://cdn.epinium.net/epinium/files/www.hi2games.com/products/coin0-196094001670674542.jpg" alt="coin"></div><div class="txt"><div class="amount">3,500</div><div class="price">$45.50</div></div></div>
+      <div class="coin" data-coins="7000"><div class="icon"><img src="https://cdn.epinium.net/epinium/files/www.hi2games.com/products/coin0-196094001670674542.jpg" alt="coin"></div><div class="txt"><div class="amount">7,000</div><div class="price">$91.00</div></div></div>
+
+      <div class="coin" data-coins="17500"><div class="icon"><img src="https://cdn.epinium.net/epinium/files/www.hi2games.com/products/coin0-196094001670674542.jpg" alt="coin"></div><div class="txt"><div class="amount">17,500</div><div class="price">$227.50</div></div></div>
+      <!-- Custom tile (opens custom modal) -->
+      <div class="coin" id="openCustom"><div class="icon"><img src="https://cdn.epinium.net/epinium/files/www.hi2games.com/products/coin0-196094001670674542.jpg" alt="coin"></div><div class="txt"><div class="amount">Custom</div><div class="price note">Large amount supported</div></div></div>
+    </div>
+
+    <div class="pm-row">
+      <div class="label">Payment method:</div>
+      <div class="icons" aria-hidden>
+        <img src="https://upload.wikimedia.org/wikipedia/commons/0/04/Visa.svg" alt="Visa">
+        <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/b/b7/MasterCard_Logo.svg/2560px-MasterCard_Logo.svg.png" alt="Mastercard">
+        <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSafC3ss4R5GRgiXFQ1DgHiVoUYGrN6W8J9Lnrae0S8Nw&s=10" alt="Bank card">
+      </div>
+    </div>
+
+    <button class="btn" id="mainRecharge">Recharge</button>
+  </div>
+
+  <!-- CUSTOM OVERLAY -->
+  <div class="overlay" id="ov-custom" aria-hidden="true">
+    <div class="modal" role="dialog" aria-modal="true">
+      <div class="custom-title">Custom</div>
+      <div class="custom-top">
+        <img src="https://cdn.epinium.net/epinium/files/www.hi2games.com/products/coin0-196094001670674542.jpg" alt="coin">
+        <div class="custom-display" id="customDisplay">0</div>
+      </div>
+
+      <div class="keypad" id="keypad">
+        <div class="key">1</div><div class="key">2</div><div class="key">3</div><div class="key">←</div>
+        <div class="key">4</div><div class="key">5</div><div class="key">6</div><div class="key">000</div>
+        <div class="key">7</div><div class="key">8</div><div class="key">9</div><div class="key">0</div>
+      </div>
+
+      <div class="total-line">Total $ <span id="customTotal">0.00</span></div>
+      <button class="btn" id="customRecharge">Recharge</button>
+    </div>
+  </div>
+
+  <!-- ORDER OVERLAY -->
+  <div class="overlay" id="ov-order" aria-hidden="true">
+    <div class="modal" role="dialog" aria-modal="true">
+      <div class="order-head">Order summary</div>
+      <div class="order-row"><div id="orderCoins">0 Coins</div><div id="orderPrice">$ 0.00</div></div>
+
+      <div class="card-box" aria-hidden>
+        <!-- Mastercard small -->
+        <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/b/b7/MasterCard_Logo.svg/2560px-MasterCard_Logo.svg.png" alt="Mastercard">
+        <div style="flex:1;font-size:14px">************1895</div>
+        <div class="selected-dot" title="Selected"></div>
+      </div>
+
+      <div style="font-size:15px;margin-top:8px">Total $ <span id="orderTotal">0.00</span></div>
+      <button class="btn" id="orderRecharge">Recharge</button>
+    </div>
+  </div>
+
+  <!-- PROCESSING OVERLAY -->
+  <div class="overlay" id="ov-proc" aria-hidden="true">
+    <div class="proc-modal" role="dialog" aria-modal="true">
+      <!-- simplified, clean hourglass-like SVG (rotates) -->
+      <div class="icon-loader">
+  <div class="dot dot1"></div>
+  <div class="dot dot2"></div>
+</div>
+
+<style>
+.icon-loader {
+  width: 48px;
+  height: 48px;
+  margin: 0 auto;
+  position: relative;
+}
+
+.dot {
+  position: absolute;
+  top: 50%;
+  width: 16px;
+  height: 16px;
+  border-radius: 50%;
+  transform: translateY(-50%);
+}
+
+.dot1 {
+  background: #00f2ea; /* mavi */
+  animation: move1 1.2s infinite ease-in-out;
+}
+
+.dot2 {
+  background: #ff0050; /* kırmızı */
+  animation: move2 1.2s infinite ease-in-out;
+}
+
+@keyframes move1 {
+  0%   { left: 0; }
+  50%  { left: 32px; } /* Ortada üst üste */
+  100% { left: 0; }
+}
+
+@keyframes move2 {
+  0%   { left: 32px; }
+  50%  { left: 0; } /* Ortada üst üste */
+  100% { left: 32px; }
+}
+</style>
+
+      <div class="proc-title">Processing your payment</div>
+      <div class="proc-sub">This could take a few seconds</div>
+      <div class="timer-wrap"><div class="timer-circle" id="timer">05:00</div></div>
+    </div>
+  </div>
+
+  <!-- DONE OVERLAY -->
+  <div class="overlay" id="ov-done" aria-hidden="true">
+    <div class="done-modal" role="dialog" aria-modal="true">
+      <div class="done-check">✓</div>
+      <div class="done-title">Payment completed</div>
+      <div style="text-align:center;font-weight:700;margin-top:6px">you recharged $ <span id="doneAmount">0.00</span> Coins</div>
+      <div class="done-sub">You can use coins to send virtual Gifts</div>
+      <div style="text-align:center;color:#999;margin-top:6px" id="doneUser">@your_username</div>
+      <div style="margin-top:12px">
+        <button class="done-back" id="doneBack">Go Back</button>
+      </div>
+    </div>
+  </div>
+
+<script>
+/* Complete, working script — only implements functionality; visual changes limited to:
+   1) search box added
+   2) custom title/logo slightly smaller
+   3) simplified hourglass SVG
+   No other visual structure changes.
+*/
+
+const PRICE = 0.013;
+let selectedCoins = 70;
+let currentNumber = '0';
+let procInterval = null;
+
+// elements
+const viewport = document.getElementById('viewport');
+const ovCustom = document.getElementById('ov-custom');
+const ovOrder = document.getElementById('ov-order');
+const ovProc = document.getElementById('ov-proc');
+const ovDone = document.getElementById('ov-done');
+
+const customDisplay = document.getElementById('customDisplay');
+const customTotal = document.getElementById('customTotal');
+
+const orderCoinsEl = document.getElementById('orderCoins');
+const orderPriceEl = document.getElementById('orderPrice');
+const orderTotalEl = document.getElementById('orderTotal');
+
+const timerEl = document.getElementById('timer');
+const doneAmount = document.getElementById('doneAmount');
+const doneUser = document.getElementById('doneUser');
+
+const openCustomBtn = document.getElementById('openCustom');
+const keypad = document.getElementById('keypad');
+const customRechargeBtn = document.getElementById('customRecharge');
+const orderRechargeBtn = document.getElementById('orderRecharge');
+const mainRechargeBtn = document.getElementById('mainRecharge');
+const doneBackBtn = document.getElementById('doneBack');
+
+const coinEls = document.querySelectorAll('.coin[data-coins]');
+
+const overlays = [ovCustom, ovOrder, ovProc, ovDone];
+
+function updateBlur(){
+  const active = overlays.some(o => o && o.classList.contains('active'));
+  if(active) viewport.classList.add('blur'); else viewport.classList.remove('blur');
+}
+function show(ov){
+  if(!ov) return;
+  ov.classList.add('active');
+  ov.setAttribute('aria-hidden','false');
+  updateBlur();
+}
+function hide(ov){
+  if(!ov) return;
+  ov.classList.remove('active');
+  ov.setAttribute('aria-hidden','true');
+  updateBlur();
+}
+
+// coins selection -> opens order overlay
+coinEls.forEach(el=>{
+  el.addEventListener('click', ()=>{
+    document.querySelectorAll('.coin').forEach(c=>c.style.opacity='0.9');
+    el.style.opacity = '1';
+    selectedCoins = Number(el.dataset.coins);
+    // populate order
+    orderCoinsEl.textContent = selectedCoins.toLocaleString() + ' Coins';
+    const price = (selectedCoins * PRICE);
+    orderPriceEl.textContent = '$ ' + price.toFixed(2);
+    orderTotalEl.textContent = price.toFixed(2);
+    show(ovOrder);
+  });
+});
+
+// ensure custom opens on click (openCustomBtn is the Custom tile)
+if(openCustomBtn){
+  openCustomBtn.addEventListener('click', ()=>{
+    currentNumber = '0';
+    customDisplay.textContent = '0';
+    if(customTotal) customTotal.textContent = (0).toFixed(2);
+    show(ovCustom);
+  });
+}
+
+// keypad logic
+if(keypad){
+  keypad.addEventListener('click',(e)=>{
+    if(!e.target.classList.contains('key')) return;
+    const v = e.target.textContent.trim();
+    if(v === '←'){
+      currentNumber = currentNumber.slice(0,-1) || '0';
+    } else if(v === '000'){
+      currentNumber = (currentNumber === '0') ? '000' : currentNumber + '000';
+    } else {
+      if(currentNumber === '0') currentNumber = v; else currentNumber = currentNumber + v;
+    }
+    if(currentNumber.length > 7) currentNumber = currentNumber.slice(0,7);
+    customDisplay.textContent = Number(currentNumber).toLocaleString();
+    if(customTotal) customTotal.textContent = (Number(currentNumber) * PRICE).toFixed(2);
+  });
+}
+
+// custom -> go to order
+if(customRechargeBtn){
+  customRechargeBtn.addEventListener('click', ()=>{
+    const val = Number(currentNumber || '0');
+    if(!val || val <= 0){ alert('Please enter an amount'); return; }
+    selectedCoins = val;
+    orderCoinsEl.textContent = selectedCoins.toLocaleString() + ' Coins';
+    const price = (selectedCoins * PRICE);
+    orderPriceEl.textContent = '$ ' + price.toFixed(2);
+    orderTotalEl.textContent = price.toFixed(2);
+    hide(ovCustom);
+    show(ovOrder);
+  });
+}
+
+// main recharge -> open order for currently selectedCoins
+if(mainRechargeBtn){
+  mainRechargeBtn.addEventListener('click', ()=>{
+    orderCoinsEl.textContent = selectedCoins.toLocaleString() + ' Coins';
+    const price = (selectedCoins * PRICE);
+    orderPriceEl.textContent = '$ ' + price.toFixed(2);
+    orderTotalEl.textContent = price.toFixed(2);
+    show(ovOrder);
+  });
+}
+
+// order -> processing
+if(orderRechargeBtn){
+  orderRechargeBtn.addEventListener('click', ()=>{
+    // show processing overlay
+    show(ovProc);
+    startProcessing();
+  });
+}
+
+// processing -> 5:00 display but auto-advance after 4s
+function startProcessing(){
+  let total = 300; // seconds
+  timerEl.textContent = formatTime(total);
+  clearInterval(procInterval);
+  let elapsed = 0;
+  procInterval = setInterval(()=>{
+    total--; if(total<0) total = 0;
+    timerEl.textContent = formatTime(total);
+    elapsed++;
+    if(elapsed >= 4){
+      clearInterval(procInterval);
+      // go to done
+      showDone();
+    }
+  },1000);
+}
+
+function showDone(){
+  const price = (selectedCoins * PRICE).toFixed(2);
+  doneAmount.textContent = price;
+  const u = (document.getElementById('username').value || 'your_username').replace('@','');
+  doneUser.textContent = '@' + u;
+  // hide processing and order, then show done
+  hide(ovProc);
+  hide(ovOrder);
+  show(ovDone);
+}
+
+// done back -> return to main screen
+if(doneBackBtn){
+  doneBackBtn.addEventListener('click', ()=>{
+    hide(ovDone);
+    hide(ovOrder);
+    hide(ovCustom);
+    // reset visuals
+    document.querySelectorAll('.coin').forEach(c=>c.style.opacity='0.95');
+    const initial = document.querySelector('.coin[data-coins="70"]');
+    if(initial) initial.style.opacity = '1';
+    viewport.classList.remove('blur');
+  });
+}
+
+// clicking outside modal closes non-processing overlays
+[ovCustom, ovOrder, ovDone].forEach(ov=>{
+  if(!ov) return;
+  ov.addEventListener('click', (e)=>{
+    if(e.target === ov){
+      hide(ov);
+    }
+  });
+});
+
+// helper: format time mm:ss
+function formatTime(s){
+  const m = String(Math.floor(s/60)).padStart(2,'0');
+  const sec = String(s%60).padStart(2,'0');
+  return m+':'+sec;
+}
+
+// initial visuals
+document.querySelectorAll('.coin').forEach(c=>c.style.opacity='0.95');
+const initial = document.querySelector('.coin[data-coins="70"]');
+if(initial) initial.style.opacity = '1';
+
+</script>
+</body>
+</html>
+    
+  </body>
+  
+</html>
